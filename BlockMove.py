@@ -36,13 +36,13 @@ def trans(xk, uk):
         -(l*m2*casadi.cos(q2)*casadi.sin(q2)*q4**2 + uk*casadi.cos(q2) + (m1 + m2)*grav*casadi.sin(q2))/(l*m1 + l*m2*(1-casadi.cos(q2)**2))
     )
 
-
 def dynamics(x, u):
     xk, xk1 = x[:,:-1], x[:,1:]
     uk, uk1 = u[0,:-1], u[0,1:]
     q1, q2, q3, q4 = xk[0,:], xk[1,:], xk[2,:], xk[3,:]
     g = (xk1 - xk) - h/2*(trans(xk,uk) + trans(xk1,uk1))
     return g
+
 
 opti.minimize(objfunc(x,u))
 opti.subject_to(dynamics(x,u) == np.zeros((4,NT-1)))
