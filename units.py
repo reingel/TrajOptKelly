@@ -8,3 +8,5 @@ kg = 1.
 sec = 1.
 
 Newton = 1.
+
+deg = pi/180
