@@ -12,6 +12,8 @@ l = 0.5*meter
 umax = 20*Newton
 dmax = 2.0*meter
 d = 1.0*meter
+cartw = 0.1*meter
+carth = 0.05*meter
 
 h = 0.05
 T = 2.0*sec
@@ -61,6 +63,27 @@ sol = opti.solve()
 xsol = sol.value(x)
 usol = sol.value(u)
 
+xc = xsol[0,:]
+thp = xsol[1,:]
+
+plt.figure(10)
+plt.gcf().canvas.mpl_connect(
+    'key_release_event',
+    lambda event: [exit(0) if event.key == 'escape' else None])
+plt.cla()
+for k in range(NT):
+    xk = xc[k]
+    thk = thp[k]
+    plt.plot([-10, 10], [0, 0], 'k')
+    plt.plot([xk-cartw, xk-cartw, xk+cartw, xk+cartw, xk-cartw],[0.1, 0.1+carth, 0.1+carth, 0.1, 0.1], 'b')
+    plt.plot([xk, xk+l*np.sin(thk)],[0.1+carth/2, 0.1+carth/2-l*np.cos(thk)])
+    plt.title(f"str({xk:.2f} m, {thk/deg:.1f} deg")
+    plt.grid(True)
+    plt.axis('equal')
+    plt.xlim([-1, 2])
+    plt.ylim([-1, 2])
+    plt.pause(0.0001)
+
 plt.figure(1)
 
 plt.subplot(311)
@@ -78,6 +101,9 @@ plt.plot(t,usol)
 plt.grid(True)
 plt.title('force')
 
+plt.gcf().canvas.mpl_connect(
+    'key_release_event',
+    lambda event: [exit(0) if event.key == 'escape' else None])
 plt.show()
 
 
